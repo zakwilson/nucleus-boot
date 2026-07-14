@@ -4631,8 +4631,6 @@ cond.end1:
 
 @g-link-args = global ptr null, align 8
 
-@g-num-link-args = global i32 0, align 4
-
 @g-interactive = global i32 0, align 4
 
 @g-repl-format = global i32 0, align 4
@@ -4680,8 +4678,6 @@ cond.end1:
 @g-cap-ns-prefix = global i32 0, align 4
 
 @g-include-paths = global ptr null, align 8
-
-@g-num-include-paths = global i32 0, align 4
 
 define ptr @fmt-i32(ptr %fmt.arg, i32 %d.arg) {
 entry:
@@ -107488,11 +107484,11 @@ entry:
   %dir.addr.23 = alloca ptr, align 8
   %candidate.addr.27 = alloca ptr, align 8
   %candidate.addr.36 = alloca ptr, align 8
-  %j.addr.46 = alloca i32, align 4
-  %candidate.addr.50 = alloca ptr, align 8
-  %libenv.addr.65 = alloca ptr, align 8
-  %candidate.addr.70 = alloca ptr, align 8
-  %candidate.addr.79 = alloca ptr, align 8
+  %j.addr.50 = alloca i32, align 4
+  %candidate.addr.56 = alloca ptr, align 8
+  %libenv.addr.70 = alloca ptr, align 8
+  %candidate.addr.75 = alloca ptr, align 8
+  %candidate.addr.84 = alloca ptr, align 8
   %t1 = load ptr, ptr @g-source-path, align 8
   %t2 = call i64 @strlen(ptr %t1)
   store i64 %t2, ptr %pathlen.addr.0, align 8
@@ -107573,82 +107569,95 @@ cond.then4.0:
 cond.fall4:
   br label %cond.end4
 cond.end4:
-  %t44 = load i32, ptr @g-num-include-paths, align 4
-  %t45 = mul nsw i32 %t44, 0
-  store i32 %t45, ptr %j.addr.46, align 4
-  br label %while.cond5
-while.cond5:
-  %t47 = load i32, ptr %j.addr.46, align 4
-  %t48 = load i32, ptr @g-num-include-paths, align 4
-  %t49 = icmp slt i32 %t47, %t48
-  br i1 %t49, label %while.body5, label %while.end5
-while.body5:
-  %t51 = getelementptr inbounds [6 x i8], ptr @.str.2780, i64 0, i64 0
+  %t44 = load ptr, ptr @g-include-paths, align 8
+  %t45 = icmp ne ptr %t44, null
+  br i1 %t45, label %cond.then5.0, label %cond.fall5
+cond.then5.0:
+  %t46 = load ptr, ptr @g-include-paths, align 8
+  %t47 = call i64 @count.pVector.cstr(ptr %t46)
+  %t48 = trunc i64 %t47 to i32
+  %t49 = mul nsw i32 %t48, 0
+  store i32 %t49, ptr %j.addr.50, align 4
+  br label %while.cond6
+while.cond6:
+  %t51 = load i32, ptr %j.addr.50, align 4
   %t52 = load ptr, ptr @g-include-paths, align 8
-  %t53 = load i32, ptr %j.addr.46, align 4
-  %t54 = sext i32 %t53 to i64
-  %t55 = getelementptr inbounds ptr, ptr %t52, i64 %t54
-  %t56 = load ptr, ptr %t55, align 8
-  %t57 = load ptr, ptr %filename.addr, align 8
-  %t58 = call ptr @fmt-2s(ptr %t51, ptr %t56, ptr %t57)
-  store ptr %t58, ptr %candidate.addr.50, align 8
-  %t59 = load ptr, ptr %candidate.addr.50, align 8
-  %t60 = call i32 @file-exists(ptr %t59)
-  %t61 = icmp ne i32 %t60, 0
-  br i1 %t61, label %cond.then6.0, label %cond.fall6
-cond.then6.0:
-  %t62 = load ptr, ptr %candidate.addr.50, align 8
-  ret ptr %t62
-cond.fall6:
-  br label %cond.end6
-cond.end6:
-  %t63 = load i32, ptr %j.addr.46, align 4
-  %t64 = add nsw i32 %t63, 1
-  store i32 %t64, ptr %j.addr.46, align 4
-  br label %while.cond5
-while.end5:
-  %t66 = getelementptr inbounds [12 x i8], ptr @.str.2781, i64 0, i64 0
-  %t67 = call ptr @getenv(ptr %t66)
-  store ptr %t67, ptr %libenv.addr.65, align 8
-  %t68 = load ptr, ptr %libenv.addr.65, align 8
-  %t69 = icmp ne ptr %t68, null
-  br i1 %t69, label %cond.then7.0, label %cond.fall7
+  %t53 = call i64 @count.pVector.cstr(ptr %t52)
+  %t54 = trunc i64 %t53 to i32
+  %t55 = icmp slt i32 %t51, %t54
+  br i1 %t55, label %while.body6, label %while.end6
+while.body6:
+  %t57 = getelementptr inbounds [6 x i8], ptr @.str.2780, i64 0, i64 0
+  %t58 = load ptr, ptr @g-include-paths, align 8
+  %t59 = load i32, ptr %j.addr.50, align 4
+  %t60 = sext i32 %t59 to i64
+  %t61 = call ptr @invoke.pVector.cstr.usize(ptr %t58, i64 %t60)
+  %t62 = load ptr, ptr %filename.addr, align 8
+  %t63 = call ptr @fmt-2s(ptr %t57, ptr %t61, ptr %t62)
+  store ptr %t63, ptr %candidate.addr.56, align 8
+  %t64 = load ptr, ptr %candidate.addr.56, align 8
+  %t65 = call i32 @file-exists(ptr %t64)
+  %t66 = icmp ne i32 %t65, 0
+  br i1 %t66, label %cond.then7.0, label %cond.fall7
 cond.then7.0:
-  %t71 = getelementptr inbounds [6 x i8], ptr @.str.2782, i64 0, i64 0
-  %t72 = load ptr, ptr %libenv.addr.65, align 8
-  %t73 = load ptr, ptr %filename.addr, align 8
-  %t74 = call ptr @fmt-2s(ptr %t71, ptr %t72, ptr %t73)
-  store ptr %t74, ptr %candidate.addr.70, align 8
-  %t75 = load ptr, ptr %candidate.addr.70, align 8
-  %t76 = call i32 @file-exists(ptr %t75)
-  %t77 = icmp ne i32 %t76, 0
-  br i1 %t77, label %cond.then8.0, label %cond.fall8
-cond.then8.0:
-  %t78 = load ptr, ptr %candidate.addr.70, align 8
-  ret ptr %t78
-cond.fall8:
-  br label %cond.end8
-cond.end8:
-  br label %cond.join7.0
-cond.join7.0:
-  br label %cond.end7
+  %t67 = load ptr, ptr %candidate.addr.56, align 8
+  ret ptr %t67
 cond.fall7:
   br label %cond.end7
 cond.end7:
-  %t80 = getelementptr inbounds [32 x i8], ptr @.str.2783, i64 0, i64 0
-  %t81 = load ptr, ptr %filename.addr, align 8
-  %t82 = call ptr @fmt-s(ptr %t80, ptr %t81)
-  store ptr %t82, ptr %candidate.addr.79, align 8
-  %t83 = load ptr, ptr %candidate.addr.79, align 8
-  %t84 = call i32 @file-exists(ptr %t83)
-  %t85 = icmp ne i32 %t84, 0
-  br i1 %t85, label %cond.then9.0, label %cond.fall9
+  %t68 = load i32, ptr %j.addr.50, align 4
+  %t69 = add nsw i32 %t68, 1
+  store i32 %t69, ptr %j.addr.50, align 4
+  br label %while.cond6
+while.end6:
+  br label %cond.join5.0
+cond.join5.0:
+  br label %cond.end5
+cond.fall5:
+  br label %cond.end5
+cond.end5:
+  %t71 = getelementptr inbounds [12 x i8], ptr @.str.2781, i64 0, i64 0
+  %t72 = call ptr @getenv(ptr %t71)
+  store ptr %t72, ptr %libenv.addr.70, align 8
+  %t73 = load ptr, ptr %libenv.addr.70, align 8
+  %t74 = icmp ne ptr %t73, null
+  br i1 %t74, label %cond.then8.0, label %cond.fall8
+cond.then8.0:
+  %t76 = getelementptr inbounds [6 x i8], ptr @.str.2782, i64 0, i64 0
+  %t77 = load ptr, ptr %libenv.addr.70, align 8
+  %t78 = load ptr, ptr %filename.addr, align 8
+  %t79 = call ptr @fmt-2s(ptr %t76, ptr %t77, ptr %t78)
+  store ptr %t79, ptr %candidate.addr.75, align 8
+  %t80 = load ptr, ptr %candidate.addr.75, align 8
+  %t81 = call i32 @file-exists(ptr %t80)
+  %t82 = icmp ne i32 %t81, 0
+  br i1 %t82, label %cond.then9.0, label %cond.fall9
 cond.then9.0:
-  %t86 = load ptr, ptr %candidate.addr.79, align 8
-  ret ptr %t86
+  %t83 = load ptr, ptr %candidate.addr.75, align 8
+  ret ptr %t83
 cond.fall9:
   br label %cond.end9
 cond.end9:
+  br label %cond.join8.0
+cond.join8.0:
+  br label %cond.end8
+cond.fall8:
+  br label %cond.end8
+cond.end8:
+  %t85 = getelementptr inbounds [32 x i8], ptr @.str.2783, i64 0, i64 0
+  %t86 = load ptr, ptr %filename.addr, align 8
+  %t87 = call ptr @fmt-s(ptr %t85, ptr %t86)
+  store ptr %t87, ptr %candidate.addr.84, align 8
+  %t88 = load ptr, ptr %candidate.addr.84, align 8
+  %t89 = call i32 @file-exists(ptr %t88)
+  %t90 = icmp ne i32 %t89, 0
+  br i1 %t90, label %cond.then10.0, label %cond.fall10
+cond.then10.0:
+  %t91 = load ptr, ptr %candidate.addr.84, align 8
+  ret ptr %t91
+cond.fall10:
+  br label %cond.end10
+cond.end10:
   ret ptr null
 }
 
@@ -110152,8 +110161,8 @@ entry:
   %cmd-bufp.addr.76 = alloca ptr, align 8
   %cmd-sizep.addr.77 = alloca i64, align 8
   %cmds.addr.79 = alloca ptr, align 8
-  %j.addr.88 = alloca i32, align 4
-  %rc2.addr.104 = alloca i32, align 4
+  %j.addr.92 = alloca i32, align 4
+  %rc2.addr.109 = alloca i32, align 4
   call void @LLVMInitializeX86TargetInfo()
   call void @LLVMInitializeX86Target()
   call void @LLVMInitializeX86TargetMC()
@@ -110306,58 +110315,71 @@ cond.then6.0:
   %t83 = load ptr, ptr %obj-path.addr.41, align 8
   %t84 = load ptr, ptr %out-path.addr.39, align 8
   %t85 = call i32 (ptr, ptr, ...) @fprintf(ptr %t81, ptr %t82, ptr %t83, ptr %t84)
-  %t86 = load i32, ptr @g-num-link-args, align 4
-  %t87 = mul nsw i32 %t86, 0
-  store i32 %t87, ptr %j.addr.88, align 4
-  br label %while.cond7
-while.cond7:
-  %t89 = load i32, ptr %j.addr.88, align 4
-  %t90 = load i32, ptr @g-num-link-args, align 4
-  %t91 = icmp slt i32 %t89, %t90
-  br i1 %t91, label %while.body7, label %while.end7
-while.body7:
-  %t92 = load ptr, ptr %cmds.addr.79, align 8
-  %t93 = getelementptr inbounds [4 x i8], ptr @.str.2981, i64 0, i64 0
+  %t86 = load ptr, ptr @g-link-args, align 8
+  %t87 = icmp ne ptr %t86, null
+  br i1 %t87, label %cond.then7.0, label %cond.fall7
+cond.then7.0:
+  %t88 = load ptr, ptr @g-link-args, align 8
+  %t89 = call i64 @count.pVector.cstr(ptr %t88)
+  %t90 = trunc i64 %t89 to i32
+  %t91 = mul nsw i32 %t90, 0
+  store i32 %t91, ptr %j.addr.92, align 4
+  br label %while.cond8
+while.cond8:
+  %t93 = load i32, ptr %j.addr.92, align 4
   %t94 = load ptr, ptr @g-link-args, align 8
-  %t95 = load i32, ptr %j.addr.88, align 4
-  %t96 = sext i32 %t95 to i64
-  %t97 = getelementptr inbounds ptr, ptr %t94, i64 %t96
-  %t98 = load ptr, ptr %t97, align 8
-  %t99 = call i32 (ptr, ptr, ...) @fprintf(ptr %t92, ptr %t93, ptr %t98)
-  %t100 = load i32, ptr %j.addr.88, align 4
-  %t101 = add nsw i32 %t100, 1
-  store i32 %t101, ptr %j.addr.88, align 4
-  br label %while.cond7
-while.end7:
-  %t102 = load ptr, ptr %cmds.addr.79, align 8
-  %t103 = call i32 @fclose(ptr %t102)
-  %t105 = load ptr, ptr %cmd-bufp.addr.76, align 8
-  %t106 = call i32 @system(ptr %t105)
-  store i32 %t106, ptr %rc2.addr.104, align 4
-  %t107 = load ptr, ptr %cmd-bufp.addr.76, align 8
-  call void @free(ptr %t107)
-  %t108 = load i32, ptr %rc2.addr.104, align 4
-  %t109 = icmp ne i32 %t108, 0
-  br i1 %t109, label %cond.then8.0, label %cond.fall8
-cond.then8.0:
-  %t110 = load ptr, ptr @stderr, align 8
-  %t111 = getelementptr inbounds [44 x i8], ptr @.str.2982, i64 0, i64 0
-  %t112 = load i32, ptr %rc2.addr.104, align 4
-  %t113 = call i32 (ptr, ptr, ...) @fprintf(ptr %t110, ptr %t111, i32 %t112)
+  %t95 = call i64 @count.pVector.cstr(ptr %t94)
+  %t96 = trunc i64 %t95 to i32
+  %t97 = icmp slt i32 %t93, %t96
+  br i1 %t97, label %while.body8, label %while.end8
+while.body8:
+  %t98 = load ptr, ptr %cmds.addr.79, align 8
+  %t99 = getelementptr inbounds [4 x i8], ptr @.str.2981, i64 0, i64 0
+  %t100 = load ptr, ptr @g-link-args, align 8
+  %t101 = load i32, ptr %j.addr.92, align 4
+  %t102 = sext i32 %t101 to i64
+  %t103 = call ptr @invoke.pVector.cstr.usize(ptr %t100, i64 %t102)
+  %t104 = call i32 (ptr, ptr, ...) @fprintf(ptr %t98, ptr %t99, ptr %t103)
+  %t105 = load i32, ptr %j.addr.92, align 4
+  %t106 = add nsw i32 %t105, 1
+  store i32 %t106, ptr %j.addr.92, align 4
+  br label %while.cond8
+while.end8:
+  br label %cond.join7.0
+cond.join7.0:
+  br label %cond.end7
+cond.fall7:
+  br label %cond.end7
+cond.end7:
+  %t107 = load ptr, ptr %cmds.addr.79, align 8
+  %t108 = call i32 @fclose(ptr %t107)
+  %t110 = load ptr, ptr %cmd-bufp.addr.76, align 8
+  %t111 = call i32 @system(ptr %t110)
+  store i32 %t111, ptr %rc2.addr.109, align 4
+  %t112 = load ptr, ptr %cmd-bufp.addr.76, align 8
+  call void @free(ptr %t112)
+  %t113 = load i32, ptr %rc2.addr.109, align 4
+  %t114 = icmp ne i32 %t113, 0
+  br i1 %t114, label %cond.then9.0, label %cond.fall9
+cond.then9.0:
+  %t115 = load ptr, ptr @stderr, align 8
+  %t116 = getelementptr inbounds [44 x i8], ptr @.str.2982, i64 0, i64 0
+  %t117 = load i32, ptr %rc2.addr.109, align 4
+  %t118 = call i32 (ptr, ptr, ...) @fprintf(ptr %t115, ptr %t116, i32 %t117)
   call void @exit(i32 1)
   unreachable
-cond.fall8:
-  br label %cond.end8
-cond.end8:
-  %t114 = load ptr, ptr %obj-path.addr.41, align 8
-  %t115 = call i32 @unlink(ptr %t114)
+cond.fall9:
+  br label %cond.end9
+cond.end9:
+  %t119 = load ptr, ptr %obj-path.addr.41, align 8
+  %t120 = call i32 @unlink(ptr %t119)
   br label %cond.join6.0
 cond.join6.0:
   br label %cond.end6
 cond.fall6:
   br label %cond.end6
 cond.end6:
-  %t116 = phi i32 [ %t115, %cond.join6.0 ], [ undef, %cond.fall6 ]
+  %t121 = phi i32 [ %t120, %cond.join6.0 ], [ undef, %cond.fall6 ]
   ret void
 }
 
@@ -110635,27 +110657,18 @@ entry:
   %t1 = icmp eq ptr %t0, null
   br i1 %t1, label %cond.then0.0, label %cond.fall0
 cond.then0.0:
-  %t2 = sext i32 64 to i64
-  %t3 = call i64 @ptr-bytes()
-  %t4 = mul nsw i64 %t2, %t3
-  %t5 = call ptr @malloc(i64 %t4)
-  store ptr %t5, ptr @g-include-paths, align 8
+  %t2 = call ptr @vector_new_in.pAllocHandle(ptr @g-arena-alloc)
+  store ptr %t2, ptr @g-include-paths, align 8
   br label %cond.join0.0
 cond.join0.0:
   br label %cond.end0
 cond.fall0:
   br label %cond.end0
 cond.end0:
-  %t6 = phi ptr [ %t5, %cond.join0.0 ], [ undef, %cond.fall0 ]
-  %t7 = load ptr, ptr @g-include-paths, align 8
-  %t8 = load i32, ptr @g-num-include-paths, align 4
-  %t9 = sext i32 %t8 to i64
-  %t10 = load ptr, ptr %path.addr, align 8
-  %t11 = getelementptr inbounds ptr, ptr %t7, i64 %t9
-  store ptr %t10, ptr %t11, align 8
-  %t12 = load i32, ptr @g-num-include-paths, align 4
-  %t13 = add nsw i32 %t12, 1
-  store i32 %t13, ptr @g-num-include-paths, align 4
+  %t3 = phi ptr [ %t2, %cond.join0.0 ], [ undef, %cond.fall0 ]
+  %t4 = load ptr, ptr @g-include-paths, align 8
+  %t5 = load ptr, ptr %path.addr, align 8
+  call void @conj.pVector.cstr.cstr(ptr %t4, ptr %t5)
   ret void
 }
 
@@ -110667,27 +110680,18 @@ entry:
   %t1 = icmp eq ptr %t0, null
   br i1 %t1, label %cond.then0.0, label %cond.fall0
 cond.then0.0:
-  %t2 = sext i32 64 to i64
-  %t3 = call i64 @ptr-bytes()
-  %t4 = mul nsw i64 %t2, %t3
-  %t5 = call ptr @malloc(i64 %t4)
-  store ptr %t5, ptr @g-link-args, align 8
+  %t2 = call ptr @vector_new_in.pAllocHandle(ptr @g-arena-alloc)
+  store ptr %t2, ptr @g-link-args, align 8
   br label %cond.join0.0
 cond.join0.0:
   br label %cond.end0
 cond.fall0:
   br label %cond.end0
 cond.end0:
-  %t6 = phi ptr [ %t5, %cond.join0.0 ], [ undef, %cond.fall0 ]
-  %t7 = load ptr, ptr @g-link-args, align 8
-  %t8 = load i32, ptr @g-num-link-args, align 4
-  %t9 = sext i32 %t8 to i64
-  %t10 = load ptr, ptr %arg.addr, align 8
-  %t11 = getelementptr inbounds ptr, ptr %t7, i64 %t9
-  store ptr %t10, ptr %t11, align 8
-  %t12 = load i32, ptr @g-num-link-args, align 4
-  %t13 = add nsw i32 %t12, 1
-  store i32 %t13, ptr @g-num-link-args, align 4
+  %t3 = phi ptr [ %t2, %cond.join0.0 ], [ undef, %cond.fall0 ]
+  %t4 = load ptr, ptr @g-link-args, align 8
+  %t5 = load ptr, ptr %arg.addr, align 8
+  call void @conj.pVector.cstr.cstr(ptr %t4, ptr %t5)
   ret void
 }
 
