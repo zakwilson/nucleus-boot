@@ -50406,50 +50406,6 @@ entry:
   ret ptr %t27
 }
 
-define ptr @emit-keyword(ptr %n.arg, ptr %scope.arg) {
-entry:
-  %n.addr = alloca ptr, align 8
-  store ptr %n.arg, ptr %n.addr, align 8
-  %scope.addr = alloca ptr, align 8
-  store ptr %scope.arg, ptr %scope.addr, align 8
-  %nn.addr.0 = alloca ptr, align 8
-  %line.addr.2 = alloca i32, align 4
-  %strnode.addr.6 = alloca ptr, align 8
-  %call.addr.18 = alloca ptr, align 8
-  %t1 = load ptr, ptr %n.addr, align 8
-  store ptr %t1, ptr %nn.addr.0, align 8
-  %t3 = load ptr, ptr %nn.addr.0, align 8
-  %t4 = getelementptr inbounds %Node, ptr %t3, i32 0, i32 1
-  %t5 = load i32, ptr %t4, align 4
-  store i32 %t5, ptr %line.addr.2, align 4
-  %t7 = call ptr @alloc-node()
-  store ptr %t7, ptr %strnode.addr.6, align 8
-  %t8 = load ptr, ptr %strnode.addr.6, align 8
-  %t9 = getelementptr inbounds %Node, ptr %t8, i32 0, i32 0
-  store i32 1, ptr %t9, align 4
-  %t10 = load ptr, ptr %strnode.addr.6, align 8
-  %t11 = load i32, ptr %line.addr.2, align 4
-  %t12 = getelementptr inbounds %Node, ptr %t10, i32 0, i32 1
-  store i32 %t11, ptr %t12, align 4
-  %t13 = load ptr, ptr %strnode.addr.6, align 8
-  %t14 = load ptr, ptr %nn.addr.0, align 8
-  %t15 = getelementptr inbounds %Node, ptr %t14, i32 0, i32 3
-  %t16 = load ptr, ptr %t15, align 8
-  %t17 = getelementptr inbounds %Node, ptr %t13, i32 0, i32 3
-  store ptr %t16, ptr %t17, align 8
-  %t19 = call ptr @intern-symbol(ptr getelementptr inbounds ([15 x i8], ptr @.str.775, i64 0, i64 0))
-  %t20 = load ptr, ptr %strnode.addr.6, align 8
-  %t21 = load i32, ptr %line.addr.2, align 4
-  %t22 = call ptr @make-cell(ptr %t20, ptr null, i32 %t21)
-  %t23 = load i32, ptr %line.addr.2, align 4
-  %t24 = call ptr @make-cell(ptr %t19, ptr %t22, i32 %t23)
-  store ptr %t24, ptr %call.addr.18, align 8
-  %t25 = load ptr, ptr %call.addr.18, align 8
-  %t26 = load ptr, ptr %scope.addr, align 8
-  %t27 = call ptr @emit-node(ptr %t25, ptr %t26)
-  ret ptr %t27
-}
-
 define ptr @emit-quote-tree(ptr %n.arg) {
 entry:
   %n.addr = alloca ptr, align 8
