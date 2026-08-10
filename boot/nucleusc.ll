@@ -15950,11 +15950,12 @@ entry:
   %t.addr = alloca ptr, align 8
   store ptr %t.arg, ptr %t.addr, align 8
   %w.addr.0 = alloca i32, align 4
-  %wi.addr.7 = alloca i64, align 8
-  %one.addr.10 = alloca i64, align 8
-  %hi.addr.18 = alloca i64, align 8
-  %half.addr.27 = alloca i64, align 8
-  %or.val6 = alloca i1, align 1
+  %or.val2 = alloca i1, align 1
+  %wi.addr.14 = alloca i64, align 8
+  %one.addr.17 = alloca i64, align 8
+  %hi.addr.25 = alloca i64, align 8
+  %half.addr.34 = alloca i64, align 8
+  %or.val8 = alloca i1, align 1
   %t1 = load ptr, ptr %t.addr, align 8
   %t2 = call i32 @int-width(ptr %t1)
   store i32 %t2, ptr %w.addr.0, align 4
@@ -15962,91 +15963,112 @@ entry:
   %t4 = icmp sle i32 %t3, 1
   br i1 %t4, label %cond.then0.0, label %cond.fall0
 cond.then0.0:
+  %t5 = load i64, ptr %v.addr, align 8
+  %t6 = sext i32 0 to i64
+  %t7 = icmp eq i64 %t5, %t6
+  store i1 %t7, ptr %or.val2, align 1
+  br i1 %t7, label %or.end2, label %or.rhs2
+or.rhs2:
+  %t8 = load i64, ptr %v.addr, align 8
+  %t9 = sext i32 1 to i64
+  %t10 = icmp eq i64 %t8, %t9
+  store i1 %t10, ptr %or.val2, align 1
+  br label %or.end2
+or.end2:
+  %t11 = load i1, ptr %or.val2, align 1
+  br i1 %t11, label %cond.then1.0, label %cond.test1.1
+cond.then1.0:
   ret i32 1
+cond.test1.1:
+  br label %cond.then1.1
+cond.then1.1:
+  ret i32 0
+cond.end1:
+  unreachable
 cond.fall0:
   br label %cond.end0
 cond.end0:
-  %t5 = load i32, ptr %w.addr.0, align 4
-  %t6 = icmp sge i32 %t5, 64
-  br i1 %t6, label %cond.then1.0, label %cond.fall1
-cond.then1.0:
-  ret i32 1
-cond.fall1:
-  br label %cond.end1
-cond.end1:
-  %t8 = load i32, ptr %w.addr.0, align 4
-  %t9 = sext i32 %t8 to i64
-  store i64 %t9, ptr %wi.addr.7, align 8
-  %t11 = sext i32 1 to i64
-  store i64 %t11, ptr %one.addr.10, align 8
-  %t12 = load ptr, ptr %t.addr, align 8
-  %t13 = call i32 @is-unsigned(ptr %t12)
-  %t14 = icmp ne i32 %t13, 0
-  br i1 %t14, label %cond.then2.0, label %cond.test2.1
-cond.then2.0:
-  %t15 = load i64, ptr %v.addr, align 8
-  %t16 = sext i32 0 to i64
-  %t17 = icmp slt i64 %t15, %t16
-  br i1 %t17, label %cond.then3.0, label %cond.fall3
+  %t12 = load i32, ptr %w.addr.0, align 4
+  %t13 = icmp sge i32 %t12, 64
+  br i1 %t13, label %cond.then3.0, label %cond.fall3
 cond.then3.0:
-  ret i32 0
+  ret i32 1
 cond.fall3:
   br label %cond.end3
 cond.end3:
-  %t19 = load i64, ptr %one.addr.10, align 8
-  %t20 = load i64, ptr %wi.addr.7, align 8
-  %t21 = shl i64 %t19, %t20
-  %t22 = load i64, ptr %one.addr.10, align 8
-  %t23 = sub nsw i64 %t21, %t22
-  store i64 %t23, ptr %hi.addr.18, align 8
-  %t24 = load i64, ptr %v.addr, align 8
-  %t25 = load i64, ptr %hi.addr.18, align 8
-  %t26 = icmp sgt i64 %t24, %t25
-  br i1 %t26, label %cond.then4.0, label %cond.test4.1
+  %t15 = load i32, ptr %w.addr.0, align 4
+  %t16 = sext i32 %t15 to i64
+  store i64 %t16, ptr %wi.addr.14, align 8
+  %t18 = sext i32 1 to i64
+  store i64 %t18, ptr %one.addr.17, align 8
+  %t19 = load ptr, ptr %t.addr, align 8
+  %t20 = call i32 @is-unsigned(ptr %t19)
+  %t21 = icmp ne i32 %t20, 0
+  br i1 %t21, label %cond.then4.0, label %cond.test4.1
 cond.then4.0:
+  %t22 = load i64, ptr %v.addr, align 8
+  %t23 = sext i32 0 to i64
+  %t24 = icmp slt i64 %t22, %t23
+  br i1 %t24, label %cond.then5.0, label %cond.fall5
+cond.then5.0:
   ret i32 0
+cond.fall5:
+  br label %cond.end5
+cond.end5:
+  %t26 = load i64, ptr %one.addr.17, align 8
+  %t27 = load i64, ptr %wi.addr.14, align 8
+  %t28 = shl i64 %t26, %t27
+  %t29 = load i64, ptr %one.addr.17, align 8
+  %t30 = sub nsw i64 %t28, %t29
+  store i64 %t30, ptr %hi.addr.25, align 8
+  %t31 = load i64, ptr %v.addr, align 8
+  %t32 = load i64, ptr %hi.addr.25, align 8
+  %t33 = icmp sgt i64 %t31, %t32
+  br i1 %t33, label %cond.then6.0, label %cond.test6.1
+cond.then6.0:
+  ret i32 0
+cond.test6.1:
+  br label %cond.then6.1
+cond.then6.1:
+  ret i32 1
+cond.end6:
+  unreachable
 cond.test4.1:
   br label %cond.then4.1
 cond.then4.1:
-  ret i32 1
-cond.end4:
-  unreachable
-cond.test2.1:
-  br label %cond.then2.1
-cond.then2.1:
-  %t28 = load i64, ptr %one.addr.10, align 8
-  %t29 = load i64, ptr %wi.addr.7, align 8
-  %t30 = load i64, ptr %one.addr.10, align 8
-  %t31 = sub nsw i64 %t29, %t30
-  %t32 = shl i64 %t28, %t31
-  store i64 %t32, ptr %half.addr.27, align 8
-  %t33 = load i64, ptr %v.addr, align 8
-  %t34 = sext i32 0 to i64
-  %t35 = load i64, ptr %half.addr.27, align 8
-  %t36 = sub nsw i64 %t34, %t35
-  %t37 = icmp slt i64 %t33, %t36
-  store i1 %t37, ptr %or.val6, align 1
-  br i1 %t37, label %or.end6, label %or.rhs6
-or.rhs6:
-  %t38 = load i64, ptr %v.addr, align 8
-  %t39 = load i64, ptr %half.addr.27, align 8
-  %t40 = load i64, ptr %one.addr.10, align 8
-  %t41 = sub nsw i64 %t39, %t40
-  %t42 = icmp sgt i64 %t38, %t41
-  store i1 %t42, ptr %or.val6, align 1
-  br label %or.end6
-or.end6:
-  %t43 = load i1, ptr %or.val6, align 1
-  br i1 %t43, label %cond.then5.0, label %cond.test5.1
-cond.then5.0:
+  %t35 = load i64, ptr %one.addr.17, align 8
+  %t36 = load i64, ptr %wi.addr.14, align 8
+  %t37 = load i64, ptr %one.addr.17, align 8
+  %t38 = sub nsw i64 %t36, %t37
+  %t39 = shl i64 %t35, %t38
+  store i64 %t39, ptr %half.addr.34, align 8
+  %t40 = load i64, ptr %v.addr, align 8
+  %t41 = sext i32 0 to i64
+  %t42 = load i64, ptr %half.addr.34, align 8
+  %t43 = sub nsw i64 %t41, %t42
+  %t44 = icmp slt i64 %t40, %t43
+  store i1 %t44, ptr %or.val8, align 1
+  br i1 %t44, label %or.end8, label %or.rhs8
+or.rhs8:
+  %t45 = load i64, ptr %v.addr, align 8
+  %t46 = load i64, ptr %half.addr.34, align 8
+  %t47 = load i64, ptr %one.addr.17, align 8
+  %t48 = sub nsw i64 %t46, %t47
+  %t49 = icmp sgt i64 %t45, %t48
+  store i1 %t49, ptr %or.val8, align 1
+  br label %or.end8
+or.end8:
+  %t50 = load i1, ptr %or.val8, align 1
+  br i1 %t50, label %cond.then7.0, label %cond.test7.1
+cond.then7.0:
   ret i32 0
-cond.test5.1:
-  br label %cond.then5.1
-cond.then5.1:
+cond.test7.1:
+  br label %cond.then7.1
+cond.then7.1:
   ret i32 1
-cond.end5:
+cond.end7:
   unreachable
-cond.end2:
+cond.end4:
   unreachable
 }
 
