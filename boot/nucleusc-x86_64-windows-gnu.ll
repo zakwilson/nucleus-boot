@@ -15458,179 +15458,171 @@ entry:
   %t1 = load ptr, ptr %t.addr, align 8
   store ptr %t1, ptr %tt.addr.0, align 8
   %t2 = load ptr, ptr %tt.addr.0, align 8
-  %t3 = getelementptr inbounds %Type, ptr %t2, i32 0, i32 0
-  %t4 = load i32, ptr %t3, align 4
-  %t5 = icmp eq i32 %t4, 1
-  br i1 %t5, label %cond.then0.0, label %cond.test0.1
+  %t3 = call i32 @is-ptr-repr(ptr %t2)
+  %t4 = icmp ne i32 %t3, 0
+  br i1 %t4, label %cond.then0.0, label %cond.fall0
 cond.then0.0:
-  ret i32 1
-cond.test0.1:
+  %t5 = load i32, ptr @g-target-ptr-bytes, align 4
+  ret i32 %t5
+cond.fall0:
+  br label %cond.end0
+cond.end0:
   %t6 = load ptr, ptr %tt.addr.0, align 8
   %t7 = getelementptr inbounds %Type, ptr %t6, i32 0, i32 0
   %t8 = load i32, ptr %t7, align 4
-  %t9 = icmp eq i32 %t8, 2
-  br i1 %t9, label %cond.then0.1, label %cond.test0.2
-cond.then0.1:
+  %t9 = icmp eq i32 %t8, 1
+  br i1 %t9, label %cond.then1.0, label %cond.test1.1
+cond.then1.0:
   ret i32 1
-cond.test0.2:
+cond.test1.1:
   %t10 = load ptr, ptr %tt.addr.0, align 8
   %t11 = getelementptr inbounds %Type, ptr %t10, i32 0, i32 0
   %t12 = load i32, ptr %t11, align 4
-  %t13 = icmp eq i32 %t12, 3
-  br i1 %t13, label %cond.then0.2, label %cond.test0.3
-cond.then0.2:
-  ret i32 2
-cond.test0.3:
+  %t13 = icmp eq i32 %t12, 2
+  br i1 %t13, label %cond.then1.1, label %cond.test1.2
+cond.then1.1:
+  ret i32 1
+cond.test1.2:
   %t14 = load ptr, ptr %tt.addr.0, align 8
   %t15 = getelementptr inbounds %Type, ptr %t14, i32 0, i32 0
   %t16 = load i32, ptr %t15, align 4
-  %t17 = icmp eq i32 %t16, 4
-  br i1 %t17, label %cond.then0.3, label %cond.test0.4
-cond.then0.3:
-  ret i32 4
-cond.test0.4:
+  %t17 = icmp eq i32 %t16, 3
+  br i1 %t17, label %cond.then1.2, label %cond.test1.3
+cond.then1.2:
+  ret i32 2
+cond.test1.3:
   %t18 = load ptr, ptr %tt.addr.0, align 8
   %t19 = getelementptr inbounds %Type, ptr %t18, i32 0, i32 0
   %t20 = load i32, ptr %t19, align 4
-  %t21 = icmp eq i32 %t20, 5
-  br i1 %t21, label %cond.then0.4, label %cond.test0.5
-cond.then0.4:
-  ret i32 8
-cond.test0.5:
+  %t21 = icmp eq i32 %t20, 4
+  br i1 %t21, label %cond.then1.3, label %cond.test1.4
+cond.then1.3:
+  ret i32 4
+cond.test1.4:
   %t22 = load ptr, ptr %tt.addr.0, align 8
   %t23 = getelementptr inbounds %Type, ptr %t22, i32 0, i32 0
   %t24 = load i32, ptr %t23, align 4
-  %t25 = icmp eq i32 %t24, 6
-  br i1 %t25, label %cond.then0.5, label %cond.test0.6
-cond.then0.5:
-  ret i32 1
-cond.test0.6:
+  %t25 = icmp eq i32 %t24, 5
+  br i1 %t25, label %cond.then1.4, label %cond.test1.5
+cond.then1.4:
+  ret i32 8
+cond.test1.5:
   %t26 = load ptr, ptr %tt.addr.0, align 8
   %t27 = getelementptr inbounds %Type, ptr %t26, i32 0, i32 0
   %t28 = load i32, ptr %t27, align 4
-  %t29 = icmp eq i32 %t28, 7
-  br i1 %t29, label %cond.then0.6, label %cond.test0.7
-cond.then0.6:
-  ret i32 2
-cond.test0.7:
+  %t29 = icmp eq i32 %t28, 6
+  br i1 %t29, label %cond.then1.5, label %cond.test1.6
+cond.then1.5:
+  ret i32 1
+cond.test1.6:
   %t30 = load ptr, ptr %tt.addr.0, align 8
   %t31 = getelementptr inbounds %Type, ptr %t30, i32 0, i32 0
   %t32 = load i32, ptr %t31, align 4
-  %t33 = icmp eq i32 %t32, 8
-  br i1 %t33, label %cond.then0.7, label %cond.test0.8
-cond.then0.7:
-  ret i32 4
-cond.test0.8:
+  %t33 = icmp eq i32 %t32, 7
+  br i1 %t33, label %cond.then1.6, label %cond.test1.7
+cond.then1.6:
+  ret i32 2
+cond.test1.7:
   %t34 = load ptr, ptr %tt.addr.0, align 8
   %t35 = getelementptr inbounds %Type, ptr %t34, i32 0, i32 0
   %t36 = load i32, ptr %t35, align 4
-  %t37 = icmp eq i32 %t36, 9
-  br i1 %t37, label %cond.then0.8, label %cond.test0.9
-cond.then0.8:
-  ret i32 8
-cond.test0.9:
+  %t37 = icmp eq i32 %t36, 8
+  br i1 %t37, label %cond.then1.7, label %cond.test1.8
+cond.then1.7:
+  ret i32 4
+cond.test1.8:
   %t38 = load ptr, ptr %tt.addr.0, align 8
   %t39 = getelementptr inbounds %Type, ptr %t38, i32 0, i32 0
   %t40 = load i32, ptr %t39, align 4
-  %t41 = icmp eq i32 %t40, 10
-  br i1 %t41, label %cond.then0.9, label %cond.test0.10
-cond.then0.9:
-  %t42 = load i32, ptr @g-target-ptr-bytes, align 4
-  ret i32 %t42
-cond.test0.10:
-  %t43 = load ptr, ptr %tt.addr.0, align 8
-  %t44 = getelementptr inbounds %Type, ptr %t43, i32 0, i32 0
-  %t45 = load i32, ptr %t44, align 4
-  %t46 = icmp eq i32 %t45, 16
-  br i1 %t46, label %cond.then0.10, label %cond.test0.11
-cond.then0.10:
-  %t47 = load i32, ptr @g-target-ptr-bytes, align 4
-  ret i32 %t47
-cond.test0.11:
-  %t48 = load ptr, ptr %tt.addr.0, align 8
-  %t49 = getelementptr inbounds %Type, ptr %t48, i32 0, i32 0
-  %t50 = load i32, ptr %t49, align 4
-  %t51 = icmp eq i32 %t50, 21
-  br i1 %t51, label %cond.then0.11, label %cond.test0.12
-cond.then0.11:
-  ret i32 4
-cond.test0.12:
-  %t52 = load ptr, ptr %tt.addr.0, align 8
-  %t53 = getelementptr inbounds %Type, ptr %t52, i32 0, i32 0
-  %t54 = load i32, ptr %t53, align 4
-  %t55 = icmp eq i32 %t54, 18
-  br i1 %t55, label %cond.then0.12, label %cond.test0.13
-cond.then0.12:
-  ret i32 4
-cond.test0.13:
-  %t56 = load ptr, ptr %tt.addr.0, align 8
-  %t57 = getelementptr inbounds %Type, ptr %t56, i32 0, i32 0
-  %t58 = load i32, ptr %t57, align 4
-  %t59 = icmp eq i32 %t58, 13
-  br i1 %t59, label %cond.then0.13, label %cond.test0.14
-cond.then0.13:
-  ret i32 4
-cond.test0.14:
-  %t60 = load ptr, ptr %tt.addr.0, align 8
-  %t61 = getelementptr inbounds %Type, ptr %t60, i32 0, i32 0
-  %t62 = load i32, ptr %t61, align 4
-  %t63 = icmp eq i32 %t62, 14
-  br i1 %t63, label %cond.then0.14, label %cond.test0.15
-cond.then0.14:
+  %t41 = icmp eq i32 %t40, 9
+  br i1 %t41, label %cond.then1.8, label %cond.test1.9
+cond.then1.8:
   ret i32 8
-cond.test0.15:
-  %t64 = load ptr, ptr %tt.addr.0, align 8
-  %t65 = getelementptr inbounds %Type, ptr %t64, i32 0, i32 0
-  %t66 = load i32, ptr %t65, align 4
-  %t67 = icmp eq i32 %t66, 19
-  br i1 %t67, label %cond.then0.15, label %cond.test0.16
-cond.then0.15:
-  %t68 = load i32, ptr @g-target-ptr-bytes, align 4
-  ret i32 %t68
-cond.test0.16:
-  %t69 = load ptr, ptr %tt.addr.0, align 8
-  %t70 = getelementptr inbounds %Type, ptr %t69, i32 0, i32 0
-  %t71 = load i32, ptr %t70, align 4
-  %t72 = icmp eq i32 %t71, 20
-  br i1 %t72, label %cond.then0.16, label %cond.test0.17
-cond.then0.16:
-  %t73 = load i32, ptr @g-target-ptr-bytes, align 4
-  ret i32 %t73
-cond.test0.17:
-  %t74 = load ptr, ptr %tt.addr.0, align 8
-  %t75 = getelementptr inbounds %Type, ptr %t74, i32 0, i32 0
-  %t76 = load i32, ptr %t75, align 4
-  %t77 = icmp eq i32 %t76, 12
-  br i1 %t77, label %cond.then0.17, label %cond.test0.18
-cond.then0.17:
-  %t78 = load i32, ptr @g-target-ptr-bytes, align 4
-  ret i32 %t78
-cond.test0.18:
-  %t79 = load ptr, ptr %tt.addr.0, align 8
-  %t80 = getelementptr inbounds %Type, ptr %t79, i32 0, i32 0
-  %t81 = load i32, ptr %t80, align 4
-  %t82 = icmp eq i32 %t81, 17
-  br i1 %t82, label %cond.then0.18, label %cond.test0.19
-cond.then0.18:
-  %t83 = load i32, ptr @g-target-ptr-bytes, align 4
-  ret i32 %t83
-cond.test0.19:
-  %t84 = load ptr, ptr %tt.addr.0, align 8
-  %t85 = getelementptr inbounds %Type, ptr %t84, i32 0, i32 0
-  %t86 = load i32, ptr %t85, align 4
-  %t87 = icmp eq i32 %t86, 22
-  br i1 %t87, label %cond.then0.19, label %cond.test0.20
-cond.then0.19:
-  %t88 = load ptr, ptr %tt.addr.0, align 8
-  %t89 = getelementptr inbounds %Type, ptr %t88, i32 0, i32 6
-  %t90 = load ptr, ptr %t89, align 8
-  %t91 = call i32 @type-size(ptr %t90)
-  ret i32 %t91
-cond.test0.20:
-  br label %cond.then0.20
-cond.then0.20:
+cond.test1.9:
+  %t42 = load ptr, ptr %tt.addr.0, align 8
+  %t43 = getelementptr inbounds %Type, ptr %t42, i32 0, i32 0
+  %t44 = load i32, ptr %t43, align 4
+  %t45 = icmp eq i32 %t44, 21
+  br i1 %t45, label %cond.then1.9, label %cond.test1.10
+cond.then1.9:
+  ret i32 4
+cond.test1.10:
+  %t46 = load ptr, ptr %tt.addr.0, align 8
+  %t47 = getelementptr inbounds %Type, ptr %t46, i32 0, i32 0
+  %t48 = load i32, ptr %t47, align 4
+  %t49 = icmp eq i32 %t48, 18
+  br i1 %t49, label %cond.then1.10, label %cond.test1.11
+cond.then1.10:
+  ret i32 4
+cond.test1.11:
+  %t50 = load ptr, ptr %tt.addr.0, align 8
+  %t51 = getelementptr inbounds %Type, ptr %t50, i32 0, i32 0
+  %t52 = load i32, ptr %t51, align 4
+  %t53 = icmp eq i32 %t52, 13
+  br i1 %t53, label %cond.then1.11, label %cond.test1.12
+cond.then1.11:
+  ret i32 4
+cond.test1.12:
+  %t54 = load ptr, ptr %tt.addr.0, align 8
+  %t55 = getelementptr inbounds %Type, ptr %t54, i32 0, i32 0
+  %t56 = load i32, ptr %t55, align 4
+  %t57 = icmp eq i32 %t56, 14
+  br i1 %t57, label %cond.then1.12, label %cond.test1.13
+cond.then1.12:
+  ret i32 8
+cond.test1.13:
+  %t58 = load ptr, ptr %tt.addr.0, align 8
+  %t59 = getelementptr inbounds %Type, ptr %t58, i32 0, i32 0
+  %t60 = load i32, ptr %t59, align 4
+  %t61 = icmp eq i32 %t60, 19
+  br i1 %t61, label %cond.then1.13, label %cond.test1.14
+cond.then1.13:
+  %t62 = load i32, ptr @g-target-ptr-bytes, align 4
+  ret i32 %t62
+cond.test1.14:
+  %t63 = load ptr, ptr %tt.addr.0, align 8
+  %t64 = getelementptr inbounds %Type, ptr %t63, i32 0, i32 0
+  %t65 = load i32, ptr %t64, align 4
+  %t66 = icmp eq i32 %t65, 20
+  br i1 %t66, label %cond.then1.14, label %cond.test1.15
+cond.then1.14:
+  %t67 = load i32, ptr @g-target-ptr-bytes, align 4
+  ret i32 %t67
+cond.test1.15:
+  %t68 = load ptr, ptr %tt.addr.0, align 8
+  %t69 = getelementptr inbounds %Type, ptr %t68, i32 0, i32 0
+  %t70 = load i32, ptr %t69, align 4
+  %t71 = icmp eq i32 %t70, 12
+  br i1 %t71, label %cond.then1.15, label %cond.test1.16
+cond.then1.15:
+  %t72 = load i32, ptr @g-target-ptr-bytes, align 4
+  ret i32 %t72
+cond.test1.16:
+  %t73 = load ptr, ptr %tt.addr.0, align 8
+  %t74 = getelementptr inbounds %Type, ptr %t73, i32 0, i32 0
+  %t75 = load i32, ptr %t74, align 4
+  %t76 = icmp eq i32 %t75, 17
+  br i1 %t76, label %cond.then1.16, label %cond.test1.17
+cond.then1.16:
+  %t77 = load i32, ptr @g-target-ptr-bytes, align 4
+  ret i32 %t77
+cond.test1.17:
+  %t78 = load ptr, ptr %tt.addr.0, align 8
+  %t79 = getelementptr inbounds %Type, ptr %t78, i32 0, i32 0
+  %t80 = load i32, ptr %t79, align 4
+  %t81 = icmp eq i32 %t80, 22
+  br i1 %t81, label %cond.then1.17, label %cond.test1.18
+cond.then1.17:
+  %t82 = load ptr, ptr %tt.addr.0, align 8
+  %t83 = getelementptr inbounds %Type, ptr %t82, i32 0, i32 6
+  %t84 = load ptr, ptr %t83, align 8
+  %t85 = call i32 @type-size(ptr %t84)
+  ret i32 %t85
+cond.test1.18:
+  br label %cond.then1.18
+cond.then1.18:
   ret i32 1
-cond.end0:
+cond.end1:
   unreachable
 }
 
@@ -19625,47 +19617,20 @@ cond.fall1:
   br label %cond.end1
 cond.end1:
   %t16 = load i32, ptr %k.addr.0, align 4
-  %t17 = icmp eq i32 %t16, 10
+  %t17 = icmp eq i32 %t16, 22
   br i1 %t17, label %cond.then2.0, label %cond.fall2
 cond.then2.0:
-  %t18 = load i32, ptr @g-target-ptr-bytes, align 4
-  ret i32 %t18
+  %t18 = load ptr, ptr %t.addr, align 8
+  %t19 = getelementptr inbounds %Type, ptr %t18, i32 0, i32 6
+  %t20 = load ptr, ptr %t19, align 8
+  %t21 = call i32 @abi-alignof(ptr %t20)
+  ret i32 %t21
 cond.fall2:
   br label %cond.end2
 cond.end2:
-  %t19 = load i32, ptr %k.addr.0, align 4
-  %t20 = icmp eq i32 %t19, 16
-  br i1 %t20, label %cond.then3.0, label %cond.fall3
-cond.then3.0:
-  %t21 = load i32, ptr @g-target-ptr-bytes, align 4
-  ret i32 %t21
-cond.fall3:
-  br label %cond.end3
-cond.end3:
-  %t22 = load i32, ptr %k.addr.0, align 4
-  %t23 = icmp eq i32 %t22, 11
-  br i1 %t23, label %cond.then4.0, label %cond.fall4
-cond.then4.0:
-  %t24 = load i32, ptr @g-target-ptr-bytes, align 4
-  ret i32 %t24
-cond.fall4:
-  br label %cond.end4
-cond.end4:
-  %t25 = load i32, ptr %k.addr.0, align 4
-  %t26 = icmp eq i32 %t25, 22
-  br i1 %t26, label %cond.then5.0, label %cond.fall5
-cond.then5.0:
-  %t27 = load ptr, ptr %t.addr, align 8
-  %t28 = getelementptr inbounds %Type, ptr %t27, i32 0, i32 6
-  %t29 = load ptr, ptr %t28, align 8
-  %t30 = call i32 @abi-alignof(ptr %t29)
-  ret i32 %t30
-cond.fall5:
-  br label %cond.end5
-cond.end5:
-  %t31 = load ptr, ptr %t.addr, align 8
-  %t32 = call i32 @type-size(ptr %t31)
-  ret i32 %t32
+  %t22 = load ptr, ptr %t.addr, align 8
+  %t23 = call i32 @type-size(ptr %t22)
+  ret i32 %t23
 }
 
 define weak_odr i32 @abi-sizeof(ptr %t.arg) {
@@ -19702,33 +19667,24 @@ cond.fall1:
   br label %cond.end1
 cond.end1:
   %t16 = load i32, ptr %k.addr.0, align 4
-  %t17 = icmp eq i32 %t16, 11
+  %t17 = icmp eq i32 %t16, 22
   br i1 %t17, label %cond.then2.0, label %cond.fall2
 cond.then2.0:
-  %t18 = load i32, ptr @g-target-ptr-bytes, align 4
-  ret i32 %t18
+  %t18 = load ptr, ptr %t.addr, align 8
+  %t19 = getelementptr inbounds %Type, ptr %t18, i32 0, i32 12
+  %t20 = load i32, ptr %t19, align 4
+  %t21 = load ptr, ptr %t.addr, align 8
+  %t22 = getelementptr inbounds %Type, ptr %t21, i32 0, i32 6
+  %t23 = load ptr, ptr %t22, align 8
+  %t24 = call i32 @abi-sizeof(ptr %t23)
+  %t25 = mul nsw i32 %t20, %t24
+  ret i32 %t25
 cond.fall2:
   br label %cond.end2
 cond.end2:
-  %t19 = load i32, ptr %k.addr.0, align 4
-  %t20 = icmp eq i32 %t19, 22
-  br i1 %t20, label %cond.then3.0, label %cond.fall3
-cond.then3.0:
-  %t21 = load ptr, ptr %t.addr, align 8
-  %t22 = getelementptr inbounds %Type, ptr %t21, i32 0, i32 12
-  %t23 = load i32, ptr %t22, align 4
-  %t24 = load ptr, ptr %t.addr, align 8
-  %t25 = getelementptr inbounds %Type, ptr %t24, i32 0, i32 6
-  %t26 = load ptr, ptr %t25, align 8
-  %t27 = call i32 @abi-sizeof(ptr %t26)
-  %t28 = mul nsw i32 %t23, %t27
-  ret i32 %t28
-cond.fall3:
-  br label %cond.end3
-cond.end3:
-  %t29 = load ptr, ptr %t.addr, align 8
-  %t30 = call i32 @type-size(ptr %t29)
-  ret i32 %t30
+  %t26 = load ptr, ptr %t.addr, align 8
+  %t27 = call i32 @type-size(ptr %t26)
+  ret i32 %t27
 }
 
 define weak_odr i32 @abi-union-size(ptr %sd.arg) {
