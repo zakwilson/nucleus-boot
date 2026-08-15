@@ -127055,13 +127055,15 @@ entry:
   store ptr %form.arg, ptr %form.addr, align 8
   %ff.addr.0 = alloca ptr, align 8
   %name-node.addr.3 = alloca ptr, align 8
-  %arms.addr.26 = alloca ptr, align 8
-  %saved-out.addr.40 = alloca ptr, align 8
-  %it.addr.43 = alloca %ListIter, align 8
-  %t46 = alloca %ListIter
-  %__gs_88.addr.48 = alloca i32, align 4
-  %cur.addr.53 = alloca ptr, align 8
-  %ctor.addr.54 = alloca ptr, align 8
+  %prev.addr.20 = alloca ptr, align 8
+  %arms.addr.33 = alloca ptr, align 8
+  %ud.addr.39 = alloca ptr, align 8
+  %saved-out.addr.49 = alloca ptr, align 8
+  %it.addr.52 = alloca %ListIter, align 8
+  %t55 = alloca %ListIter
+  %__gs_88.addr.57 = alloca i32, align 4
+  %cur.addr.62 = alloca ptr, align 8
+  %ctor.addr.63 = alloca ptr, align 8
   %t1 = load ptr, ptr %form.addr, align 8
   store ptr %t1, ptr %ff.addr.0, align 8
   %t2 = load ptr, ptr %ff.addr.0, align 8
@@ -127088,116 +127090,140 @@ cond.then0.1:
   %t15 = load ptr, ptr %name-node.addr.3, align 8
   %t16 = getelementptr inbounds %Node, ptr %t15, i32 0, i32 3
   %t17 = load ptr, ptr %t16, align 8
-  %t18 = call ptr @uniondef-lookup(ptr %t17)
-  %t19 = icmp ne ptr %t18, null
-  br i1 %t19, label %cond.then1.0, label %cond.fall1
+  %t18 = call ptr @qualify-name(ptr %t17)
+  %t19 = call ptr @uniondef-lookup(ptr %t18)
+  store ptr %t19, ptr %prev.addr.20, align 8
+  %t21 = load ptr, ptr %prev.addr.20, align 8
+  %t22 = icmp ne ptr %t21, null
+  br i1 %t22, label %cond.then1.0, label %cond.test1.1
 cond.then1.0:
+  %t23 = load ptr, ptr %prev.addr.20, align 8
+  %t24 = getelementptr inbounds %UnionDef, ptr %t23, i32 0, i32 11
+  %t25 = load i32, ptr %t24, align 4
+  %t26 = icmp ne i32 %t25, 0
+  br i1 %t26, label %cond.then2.0, label %cond.fall2
+cond.then2.0:
   ret void
-cond.fall1:
+cond.fall2:
+  br label %cond.end2
+cond.end2:
+  br label %cond.join1.0
+cond.join1.0:
+  br label %cond.end1
+cond.test1.1:
+  br label %cond.then1.1
+cond.then1.1:
+  br label %cond.join1.1
+cond.join1.1:
   br label %cond.end1
 cond.end1:
-  %t20 = load ptr, ptr %name-node.addr.3, align 8
-  %t21 = getelementptr inbounds %Node, ptr %t20, i32 0, i32 3
-  %t22 = load ptr, ptr %t21, align 8
-  %t23 = load ptr, ptr %ff.addr.0, align 8
-  %t24 = getelementptr inbounds %Node, ptr %t23, i32 0, i32 1
-  %t25 = load i32, ptr %t24, align 4
-  call void @guard-name-kind(ptr %t22, i32 %t25, i32 3)
-  %t27 = load ptr, ptr %ff.addr.0, align 8
-  %t28 = getelementptr inbounds %Node, ptr %t27, i32 0, i32 5
+  %t27 = load ptr, ptr %name-node.addr.3, align 8
+  %t28 = getelementptr inbounds %Node, ptr %t27, i32 0, i32 3
   %t29 = load ptr, ptr %t28, align 8
-  %t30 = getelementptr inbounds %Node, ptr %t29, i32 0, i32 5
-  %t31 = load ptr, ptr %t30, align 8
-  store ptr %t31, ptr %arms.addr.26, align 8
-  %t32 = load ptr, ptr %name-node.addr.3, align 8
-  %t33 = getelementptr inbounds %Node, ptr %t32, i32 0, i32 3
-  %t34 = load ptr, ptr %t33, align 8
-  %t35 = load ptr, ptr %arms.addr.26, align 8
-  %t36 = load ptr, ptr %ff.addr.0, align 8
-  %t37 = getelementptr inbounds %Node, ptr %t36, i32 0, i32 1
-  %t38 = load i32, ptr %t37, align 4
-  %t39 = call ptr @defunion-register(ptr %t34, ptr %t35, i32 %t38)
-  %t41 = load ptr, ptr @g-out, align 8
-  store ptr %t41, ptr %saved-out.addr.40, align 8
-  %t42 = load ptr, ptr @g-decl-stream, align 8
-  store ptr %t42, ptr @g-out, align 8
-  %t44 = load ptr, ptr %arms.addr.26, align 8
-  %t45 = call i64 @list-iter(ptr %t44)
-  store i64 %t45, ptr %t46
-  %t47 = load %ListIter, ptr %t46
-  store %ListIter %t47, ptr %it.addr.43, align 8
-  store i32 0, ptr %__gs_88.addr.48, align 4
-  br label %while.cond2
-while.cond2:
-  %t49 = load i32, ptr %__gs_88.addr.48, align 4
-  %t50 = icmp eq i32 %t49, 0
-  br i1 %t50, label %while.body2, label %while.end2
-while.body2:
-  %t51 = call ptr @next.pListIter(ptr %it.addr.43)
-  %t52 = icmp eq ptr %t51, null
-  br i1 %t52, label %match.none3, label %match.some3
-match.none3:
-  store i32 1, ptr %__gs_88.addr.48, align 4
-  br label %match.join3.0
-match.join3.0:
-  br label %match.end3
-match.some3:
-  store ptr %t51, ptr %cur.addr.53, align 8
-  %t55 = load ptr, ptr %name-node.addr.3, align 8
-  %t56 = getelementptr inbounds %Node, ptr %t55, i32 0, i32 3
-  %t57 = load ptr, ptr %t56, align 8
-  %t58 = load ptr, ptr %cur.addr.53, align 8
-  %t59 = load ptr, ptr %ff.addr.0, align 8
-  %t60 = getelementptr inbounds %Node, ptr %t59, i32 0, i32 1
-  %t61 = load i32, ptr %t60, align 4
-  %t62 = call ptr @union-ctor-form(ptr %t57, ptr %t58, i32 %t61)
-  store ptr %t62, ptr %ctor.addr.54, align 8
-  %t63 = call ptr @intern-symbol(ptr getelementptr inbounds ([8 x i8], ptr @.str.2874, i64 0, i64 0))
-  %t64 = load ptr, ptr %ctor.addr.54, align 8
-  %t65 = call ptr @node-at(ptr %t64, i32 1)
-  %t66 = load ptr, ptr %ctor.addr.54, align 8
-  %t67 = call ptr @node-at(ptr %t66, i32 2)
-  %t68 = load ptr, ptr %ctor.addr.54, align 8
-  %t69 = call ptr @node-at(ptr %t68, i32 3)
-  %t70 = load ptr, ptr %ff.addr.0, align 8
-  %t71 = getelementptr inbounds %Node, ptr %t70, i32 0, i32 1
-  %t72 = load i32, ptr %t71, align 4
-  %t73 = call ptr @make-cell(ptr %t69, ptr null, i32 %t72)
-  %t74 = load ptr, ptr %ff.addr.0, align 8
-  %t75 = getelementptr inbounds %Node, ptr %t74, i32 0, i32 1
-  %t76 = load i32, ptr %t75, align 4
-  %t77 = call ptr @make-cell(ptr %t67, ptr %t73, i32 %t76)
-  %t78 = load ptr, ptr %ff.addr.0, align 8
-  %t79 = getelementptr inbounds %Node, ptr %t78, i32 0, i32 1
-  %t80 = load i32, ptr %t79, align 4
-  %t81 = call ptr @make-cell(ptr %t65, ptr %t77, i32 %t80)
-  %t82 = load ptr, ptr %ff.addr.0, align 8
-  %t83 = getelementptr inbounds %Node, ptr %t82, i32 0, i32 1
-  %t84 = load i32, ptr %t83, align 4
-  %t85 = call ptr @make-cell(ptr %t63, ptr %t81, i32 %t84)
-  call void @emit-nuch-declare-import(ptr %t85)
-  br label %match.join3.1
-match.join3.1:
-  br label %match.end3
-match.end3:
-  br label %while.cond2
-while.end2:
-  %t86 = load ptr, ptr %saved-out.addr.40, align 8
-  store ptr %t86, ptr @g-out, align 8
+  %t30 = load ptr, ptr %ff.addr.0, align 8
+  %t31 = getelementptr inbounds %Node, ptr %t30, i32 0, i32 1
+  %t32 = load i32, ptr %t31, align 4
+  call void @guard-name-kind(ptr %t29, i32 %t32, i32 3)
+  %t34 = load ptr, ptr %ff.addr.0, align 8
+  %t35 = getelementptr inbounds %Node, ptr %t34, i32 0, i32 5
+  %t36 = load ptr, ptr %t35, align 8
+  %t37 = getelementptr inbounds %Node, ptr %t36, i32 0, i32 5
+  %t38 = load ptr, ptr %t37, align 8
+  store ptr %t38, ptr %arms.addr.33, align 8
+  %t40 = load ptr, ptr %name-node.addr.3, align 8
+  %t41 = getelementptr inbounds %Node, ptr %t40, i32 0, i32 3
+  %t42 = load ptr, ptr %t41, align 8
+  %t43 = call ptr @qualify-name(ptr %t42)
+  %t44 = load ptr, ptr %arms.addr.33, align 8
+  %t45 = load ptr, ptr %ff.addr.0, align 8
+  %t46 = getelementptr inbounds %Node, ptr %t45, i32 0, i32 1
+  %t47 = load i32, ptr %t46, align 4
+  %t48 = call ptr @defunion-register(ptr %t43, ptr %t44, i32 %t47)
+  store ptr %t48, ptr %ud.addr.39, align 8
+  %t50 = load ptr, ptr @g-out, align 8
+  store ptr %t50, ptr %saved-out.addr.49, align 8
+  %t51 = load ptr, ptr @g-decl-stream, align 8
+  store ptr %t51, ptr @g-out, align 8
+  %t53 = load ptr, ptr %arms.addr.33, align 8
+  %t54 = call i64 @list-iter(ptr %t53)
+  store i64 %t54, ptr %t55
+  %t56 = load %ListIter, ptr %t55
+  store %ListIter %t56, ptr %it.addr.52, align 8
+  store i32 0, ptr %__gs_88.addr.57, align 4
+  br label %while.cond3
+while.cond3:
+  %t58 = load i32, ptr %__gs_88.addr.57, align 4
+  %t59 = icmp eq i32 %t58, 0
+  br i1 %t59, label %while.body3, label %while.end3
+while.body3:
+  %t60 = call ptr @next.pListIter(ptr %it.addr.52)
+  %t61 = icmp eq ptr %t60, null
+  br i1 %t61, label %match.none4, label %match.some4
+match.none4:
+  store i32 1, ptr %__gs_88.addr.57, align 4
+  br label %match.join4.0
+match.join4.0:
+  br label %match.end4
+match.some4:
+  store ptr %t60, ptr %cur.addr.62, align 8
+  %t64 = load ptr, ptr %name-node.addr.3, align 8
+  %t65 = getelementptr inbounds %Node, ptr %t64, i32 0, i32 3
+  %t66 = load ptr, ptr %t65, align 8
+  %t67 = load ptr, ptr %cur.addr.62, align 8
+  %t68 = load ptr, ptr %ff.addr.0, align 8
+  %t69 = getelementptr inbounds %Node, ptr %t68, i32 0, i32 1
+  %t70 = load i32, ptr %t69, align 4
+  %t71 = call ptr @union-ctor-form(ptr %t66, ptr %t67, i32 %t70)
+  store ptr %t71, ptr %ctor.addr.63, align 8
+  %t72 = call ptr @intern-symbol(ptr getelementptr inbounds ([8 x i8], ptr @.str.2874, i64 0, i64 0))
+  %t73 = load ptr, ptr %ctor.addr.63, align 8
+  %t74 = call ptr @node-at(ptr %t73, i32 1)
+  %t75 = load ptr, ptr %ctor.addr.63, align 8
+  %t76 = call ptr @node-at(ptr %t75, i32 2)
+  %t77 = load ptr, ptr %ctor.addr.63, align 8
+  %t78 = call ptr @node-at(ptr %t77, i32 3)
+  %t79 = load ptr, ptr %ff.addr.0, align 8
+  %t80 = getelementptr inbounds %Node, ptr %t79, i32 0, i32 1
+  %t81 = load i32, ptr %t80, align 4
+  %t82 = call ptr @make-cell(ptr %t78, ptr null, i32 %t81)
+  %t83 = load ptr, ptr %ff.addr.0, align 8
+  %t84 = getelementptr inbounds %Node, ptr %t83, i32 0, i32 1
+  %t85 = load i32, ptr %t84, align 4
+  %t86 = call ptr @make-cell(ptr %t76, ptr %t82, i32 %t85)
+  %t87 = load ptr, ptr %ff.addr.0, align 8
+  %t88 = getelementptr inbounds %Node, ptr %t87, i32 0, i32 1
+  %t89 = load i32, ptr %t88, align 4
+  %t90 = call ptr @make-cell(ptr %t74, ptr %t86, i32 %t89)
+  %t91 = load ptr, ptr %ff.addr.0, align 8
+  %t92 = getelementptr inbounds %Node, ptr %t91, i32 0, i32 1
+  %t93 = load i32, ptr %t92, align 4
+  %t94 = call ptr @make-cell(ptr %t72, ptr %t90, i32 %t93)
+  call void @emit-nuch-declare-import(ptr %t94)
+  br label %match.join4.1
+match.join4.1:
+  br label %match.end4
+match.end4:
+  br label %while.cond3
+while.end3:
+  %t95 = load ptr, ptr %ud.addr.39, align 8
+  %t96 = getelementptr inbounds %UnionDef, ptr %t95, i32 0, i32 11
+  store i32 1, ptr %t96, align 4
+  %t97 = load ptr, ptr %saved-out.addr.49, align 8
+  store ptr %t97, ptr @g-out, align 8
   br label %cond.join0.1
 cond.join0.1:
   br label %cond.end0
 cond.test0.2:
   br label %cond.then0.2
 cond.then0.2:
-  %t87 = load ptr, ptr %name-node.addr.3, align 8
-  %t88 = getelementptr inbounds %Node, ptr %t87, i32 0, i32 1
-  %t89 = load i32, ptr %t88, align 4
-  %t90 = getelementptr inbounds [32 x i8], ptr @.str.2875, i64 0, i64 0
-  call void @die-at(i32 %t89, ptr %t90)
+  %t98 = load ptr, ptr %name-node.addr.3, align 8
+  %t99 = getelementptr inbounds %Node, ptr %t98, i32 0, i32 1
+  %t100 = load i32, ptr %t99, align 4
+  %t101 = getelementptr inbounds [32 x i8], ptr @.str.2875, i64 0, i64 0
+  call void @die-at(i32 %t100, ptr %t101)
   unreachable
 cond.end0:
-  %t91 = phi ptr [ %t86, %cond.join0.1 ]
+  %t102 = phi ptr [ %t97, %cond.join0.1 ]
   ret void
 }
 
@@ -127683,6 +127709,8 @@ match.end1:
 while.end0:
   %t60 = load ptr, ptr %forms.addr, align 8
   call void @prescan-struct-layouts(ptr %t60)
+  %t61 = load ptr, ptr %forms.addr, align 8
+  call void @prescan-union-layouts(ptr %t61)
   ret void
 }
 
